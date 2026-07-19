@@ -60,45 +60,29 @@ const Home = () => {
           style={{
             marginTop: '3rem',
             marginBottom: 'auto',
-            background: 'transparent',
-            border: 'none',
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(4px)',
+            border: '2px solid #fff',
+            borderRadius: '30px',
+            padding: '0.8rem 2.5rem',
             color: '#fff',
-            fontSize: '1.5rem',
-            fontWeight: '700',
+            fontSize: '1.2rem',
+            fontWeight: '600',
             cursor: 'pointer',
-            textShadow: '0 2px 8px rgba(0,0,0,0.8)',
-            textDecoration: 'none'
+            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            transition: 'all 0.3s ease'
           }}
-          onMouseEnter={(e) => e.target.style.color = '#38bdf8'}
-          onMouseLeave={(e) => e.target.style.color = '#fff'}
+          onMouseEnter={(e) => {
+            e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+            e.target.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.target.style.transform = 'translateY(0)';
+          }}
         >
           Log in
         </button>
-
-        {/* Bottom Left Logo Stamp */}
-        <div style={{ 
-          position: 'absolute', 
-          bottom: '2rem', 
-          left: '2rem',
-          background: '#fef08a', /* Yellow-ish stamp */
-          borderRadius: '50% 40% 60% 40%',
-          padding: '1.5rem',
-          transform: 'rotate(-5deg)',
-          boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '120px',
-          height: '80px'
-        }}>
-          <div style={{ color: '#000', fontWeight: '800', fontSize: '1.1rem', lineHeight: '1' }}>
-            <span style={{ color: '#0284c7' }}>s</span>cen<span style={{ color: '#0284c7' }}>T</span>rip
-          </div>
-          <div style={{ color: '#000', fontSize: '0.6rem', fontWeight: '600', marginTop: '2px' }}>
-            with Busan
-          </div>
-        </div>
 
       </div>
     </div>
