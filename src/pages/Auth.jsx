@@ -19,8 +19,8 @@ const Auth = ({ onLogin }) => {
     
     if (user) {
       onLogin(user);
-      // Redirect back to where they came from or home
-      const from = location.state?.from?.pathname || '/';
+      // Redirect back to where they came from or districts
+      const from = location.state?.from?.pathname || '/districts';
       navigate(from, { replace: true });
     } else {
       alert('Login failed. Please try again.');

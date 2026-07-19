@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
+import Districts from './pages/Districts';
 import MapDirectory from './pages/MapDirectory';
 import Story from './pages/Story';
 import Review from './pages/Review';
@@ -23,7 +24,7 @@ function App() {
   return (
     <BrowserRouter>
       <header className="app-header" style={{ justifyContent: 'space-between' }}>
-        <Link to="/" className="logo">ScenTrip</Link>
+        <Link to="/districts" className="logo">ScenTrip</Link>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           {['en', 'ko', 'ja', 'zh'].map(lang => (
             <button 
@@ -55,6 +56,7 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/districts" element={<Districts />} />
           <Route path="/district/:id" element={<MapDirectory />} />
           <Route path="/story/:id" element={<Story />} />
           <Route path="/review/:id" element={<Review user={user} />} />

@@ -1,73 +1,104 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDistricts } from '../services/googleSheets';
-import { useLanguage, translations } from '../LanguageContext';
-import mainImage from '../assets/main_image.png';
 
 const Home = () => {
-  const [districts, setDistricts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { language } = useLanguage();
-  const t = translations[language];
-
-  useEffect(() => {
-    const fetchDistricts = async () => {
-      const data = await getDistricts();
-      setDistricts(data);
-      setLoading(false);
-    };
-    fetchDistricts();
-  }, []);
 
   return (
-    <div className="home-container animate-fade-in">
-      <div className="hero-section" style={{ position: 'relative', width: '100%', height: '50vh', borderRadius: '24px', overflow: 'hidden', marginBottom: '3rem', boxShadow: 'var(--glass-shadow)' }}>
-        <img src={mainImage} alt="ScenTrip Main" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.9), transparent)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '3rem' }}>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '3.5rem', marginBottom: '1rem', color: '#fff', textShadow: '0 4px 12px rgba(0,0,0,0.5)' }}>{t.discover}</h1>
-          <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', maxWidth: '600px' }}>{t.discoverSub}</p>
-        </div>
-      </div>
+    <div 
+      className="splash-container animate-fade-in" 
+      style={{ 
+        position: 'fixed',
+        inset: 0,
+        zIndex: 1000,
+        background: `url('https://images.unsplash.com/photo-1517154421773-0529f29ea451?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat`,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'var(--font-sans)',
+      }}
+    >
+      {/* Dark Overlay for better text readability */}
+      <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)' }}></div>
 
-      <div className="districts-section">
-        <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>{t.chooseDistrict}</h2>
+      {/* Main Content Container */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100%' }}>
         
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>{t.loading}</div>
-        ) : (
-          <div className="districts-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-            {districts.map((district, idx) => (
-              <div 
-                key={district.id} 
-                className="district-card glass-panel" 
-                onClick={() => navigate(`/district/${district.id}`)}
-                style={{
-                  cursor: 'pointer',
-                  overflow: 'hidden',
-                  transition: 'all 0.4s ease',
-                  animationDelay: `${idx * 0.1}s`
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-10px)';
-                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(56, 189, 248, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--glass-shadow)';
-                }}
-              >
-                <div style={{ height: '200px', width: '100%', overflow: 'hidden' }}>
-                  <img src={district.image} alt={district.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} className="card-img" />
-                </div>
-                <div style={{ padding: '1.5rem' }}>
-                  <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>{district.name}</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>{district.description}</p>
-                </div>
-              </div>
-            ))}
+        {/* Top Logo */}
+        <h1 style={{ 
+          fontSize: '4rem', 
+          fontWeight: '700', 
+          marginTop: '10vh',
+          textShadow: '0 4px 10px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.5)',
+          letterSpacing: '2px',
+          color: '#fff'
+        }}>
+          <span style={{ color: '#38bdf8' }}>S</span>cen<span style={{ color: '#38bdf8' }}>T</span>rip
+        </h1>
+
+        {/* Center Text */}
+        <div style={{ 
+          marginTop: 'auto',
+          textAlign: 'center',
+          fontSize: '1.8rem',
+          fontWeight: '600',
+          lineHeight: '1.5',
+          textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+          color: '#fff'
+        }}>
+          <div>When traveling to Busan,</div>
+          <div><span style={{ color: '#38bdf8' }}>s</span>cen<span style={{ color: '#38bdf8' }}>T</span>rip</div>
+          <div style={{ marginTop: '1rem' }}>need the scent of Busan,</div>
+          <div><span style={{ color: '#38bdf8' }}>s</span>cen<span style={{ color: '#38bdf8' }}>T</span>rip</div>
+        </div>
+
+        {/* Login Button */}
+        <button 
+          onClick={() => navigate('/auth')}
+          style={{
+            marginTop: '3rem',
+            marginBottom: 'auto',
+            background: 'transparent',
+            border: 'none',
+            color: '#fff',
+            fontSize: '1.5rem',
+            fontWeight: '700',
+            cursor: 'pointer',
+            textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+            textDecoration: 'none'
+          }}
+          onMouseEnter={(e) => e.target.style.color = '#38bdf8'}
+          onMouseLeave={(e) => e.target.style.color = '#fff'}
+        >
+          Log in
+        </button>
+
+        {/* Bottom Left Logo Stamp */}
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '2rem', 
+          left: '2rem',
+          background: '#fef08a', /* Yellow-ish stamp */
+          borderRadius: '50% 40% 60% 40%',
+          padding: '1.5rem',
+          transform: 'rotate(-5deg)',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '120px',
+          height: '80px'
+        }}>
+          <div style={{ color: '#000', fontWeight: '800', fontSize: '1.1rem', lineHeight: '1' }}>
+            <span style={{ color: '#0284c7' }}>s</span>cen<span style={{ color: '#0284c7' }}>T</span>rip
           </div>
-        )}
+          <div style={{ color: '#000', fontSize: '0.6rem', fontWeight: '600', marginTop: '2px' }}>
+            with Busan
+          </div>
+        </div>
+
       </div>
     </div>
   );
