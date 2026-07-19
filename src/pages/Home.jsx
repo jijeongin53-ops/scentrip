@@ -12,14 +12,22 @@ const Home = () => {
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
-        background: `url(${splashBg}) center/cover no-repeat`,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: 'var(--font-sans)',
+        overflow: 'hidden'
       }}
     >
+      {/* Background Image Layer (Scaled to hide baked-in logo at the top) */}
+      <div style={{
+        position: 'absolute',
+        inset: '-10%', /* Make it larger than viewport */
+        background: `url(${splashBg}) center 20%/cover no-repeat`,
+        zIndex: 0
+      }}></div>
+
       {/* Dark Overlay for better text readability */}
       <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)' }}></div>
 
