@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import splashBg from '../assets/splash_bg.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Home = () => {
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
-        background: `url('https://images.unsplash.com/photo-1517154421773-0529f29ea451?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat`,
+        background: `url(${splashBg}) center/cover no-repeat`,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
