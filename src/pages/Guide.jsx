@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { FiSend } from 'react-icons/fi';
-import { LuBot } from 'react-icons/lu';
+import { FiSend, FiSmile } from 'react-icons/fi';
 
 const Guide = () => {
   const [messages, setMessages] = useState([
@@ -32,7 +31,7 @@ const Guide = () => {
       <div className="dark-card" style={{ borderRadius: '0 0 24px 24px', margin: 0, padding: '2rem 1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{ background: 'var(--accent-color)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', color: '#fff' }}>
-            <LuBot />
+            <FiSmile />
           </div>
           <div>
             <h1 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '4px' }}>ScenTrip Soul Mate ✨</h1>

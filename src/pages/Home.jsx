@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LuBird, LuFootprints } from 'react-icons/lu';
-import { FiMapPin } from 'react-icons/fi';
+import { FiMapPin, FiSmile, FiActivity } from 'react-icons/fi';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ const Home = () => {
           fontSize: '3.5rem', color: 'var(--accent-color)',
           boxShadow: '0 10px 25px rgba(16,185,129,0.2)'
         }}>
-          <LuBird />
+          <FiSmile />
         </div>
         <div style={{
           position: 'absolute', top: '-10px', right: '-20px',
@@ -64,7 +63,7 @@ const Home = () => {
       <div style={{ width: '100%', background: 'white', borderRadius: '20px', padding: '1.5rem', boxShadow: 'var(--shadow-md)', marginBottom: '2rem', border: '1px solid #f1f5f9' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <LuFootprints style={{ color: 'var(--accent-color)' }} /> Walking Tracker
+            <FiActivity style={{ color: 'var(--accent-color)' }} /> Walking Tracker
           </h3>
           <span style={{ fontSize: '0.8rem', color: 'var(--accent-color)', fontWeight: '600', background: '#f0fdf4', padding: '4px 8px', borderRadius: '12px' }}>
             Active

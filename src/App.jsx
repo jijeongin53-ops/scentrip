@@ -7,8 +7,7 @@ import Guide from './pages/Guide';
 import Profile from './pages/Profile';
 import Auth from './pages/Auth';
 import { useLanguage } from './LanguageContext';
-import { FiHome, FiMap, FiMessageSquare, FiUser, FiMenu } from 'react-icons/fi';
-import { LuLeaf } from 'react-icons/lu';
+import { FiHome, FiMap, FiMessageSquare, FiUser, FiMenu, FiCompass } from 'react-icons/fi';
 import './index.css';
 
 function BottomNav() {
@@ -50,7 +49,7 @@ function Header() {
     <header className="app-header">
       <Link to="/" className="logo-container">
         <div className="logo-icon">
-          <LuLeaf />
+          <FiCompass />
         </div>
         <div className="logo-text">
           ScenTrip

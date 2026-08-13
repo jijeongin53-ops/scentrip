@@ -1,6 +1,5 @@
 import React from 'react';
-import { FiZap, FiAward, FiLogOut } from 'react-icons/fi';
-import { LuUser2 } from 'react-icons/lu';
+import { FiZap, FiAward, FiLogOut, FiUser } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = ({ user, onLogout }) => {
@@ -22,7 +21,7 @@ const Profile = ({ user, onLogout }) => {
           fontSize: '2.5rem', color: 'var(--text-secondary)',
           position: 'relative'
         }}>
-          <LuUser2 />
+          <FiUser />
           <div style={{
             position: 'absolute', bottom: '-5px', right: '-5px',
             background: 'var(--accent-color)', color: 'white',
