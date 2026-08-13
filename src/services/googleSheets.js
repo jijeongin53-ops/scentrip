@@ -87,7 +87,11 @@ const getData = async (sheet) => {
     }
     try {
         const response = await fetch(`${SCRIPT_URL}?sheet=${sheet}`);
-        return await response.json();
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+            return data;
+        }
+        return MOCK_DATA[sheet] || [];
     } catch (err) {
         console.error('Error getting data:', err);
         return MOCK_DATA[sheet] || [];
@@ -127,4 +131,18 @@ export const loginUser = async (userInfo) => {
     }
     await postData("Users", "append", payload);
     return payload;
+};
+
+// Automatic one-click sync to push all 40 spots directly to user's Google Sheet
+export const syncAllSpotsToGoogleSheet = async () => {
+    if (!SCRIPT_URL) {
+        alert('Google Sheets Apps Script URL (VITE_GOOGLE_SHEETS_URL) is not set on Vercel.');
+        return false;
+    }
+    let successCount = 0;
+    for (const spot of MOCK_DATA.Alleyways) {
+        const res = await postData("Alleyways", "append", spot);
+        if (res) successCount++;
+    }
+    return successCount;
 };

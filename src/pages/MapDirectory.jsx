@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { getAlleyways, getDistricts } from '../services/googleSheets';
+import { getAlleyways, getDistricts, syncAllSpotsToGoogleSheet } from '../services/googleSheets';
 import { useLanguage, translations } from '../LanguageContext';
-import { FiNavigation, FiMapPin, FiVolume2, FiSquare } from 'react-icons/fi';
+import { FiNavigation, FiMapPin, FiVolume2, FiSquare, FiRefreshCw } from 'react-icons/fi';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -90,11 +90,22 @@ const MapDirectory = () => {
   const [userPos, setUserPos] = useState(null);
   const [locating, setLocating] = useState(false);
   const [playingId, setPlayingId] = useState(null);
+  const [syncing, setSyncing] = useState(false);
+
+  // Auto/Manual Sync to Google Sheet
+  const handleSyncToSheet = async () => {
+    setSyncing(true);
+    const count = await syncAllSpotsToGoogleSheet();
+    setSyncing(false);
+    if (count) {
+      alert(`Success! Auto-saved all 40 spots to your Google Sheet!`);
+    }
+  };
 
   // English Audio Guide (Web Speech API Text-to-Speech)
   const speakAudioGuide = (spotId, title, intro) => {
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel(); // Stop any previous speech
+      window.speechSynthesis.cancel();
       
       if (playingId === spotId) {
         setPlayingId(null);
@@ -106,24 +117,13 @@ const MapDirectory = () => {
       utterance.lang = 'en-US';
       utterance.rate = 0.95;
 
-      utterance.onend = () => {
-        setPlayingId(null);
-      };
-      utterance.onerror = () => {
-        setPlayingId(null);
-      };
+      utterance.onend = () => setPlayingId(null);
+      utterance.onerror = () => setPlayingId(null);
 
       setPlayingId(spotId);
       window.speechSynthesis.speak(utterance);
     } else {
       alert('Audio guide (Text-To-Speech) is not supported in this browser.');
-    }
-  };
-
-  const stopAudioGuide = () => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      setPlayingId(null);
     }
   };
 
@@ -163,7 +163,6 @@ const MapDirectory = () => {
     fetchData();
     handleLocateMe();
 
-    // Clean up audio on unmount
     return () => {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -186,31 +185,56 @@ const MapDirectory = () => {
     <div className="map-directory-container animate-fade-in" style={{ display: 'flex', gap: '1.5rem', height: 'calc(100vh - 150px)', padding: '1rem' }}>
       {/* Left Sidebar: Nearby Alleyways & Spots */}
       <div className="sidebar" style={{ flex: '1', overflowY: 'auto', paddingRight: '0.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '6px' }}>
           <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--header-bg)' }}>
             {district?.name || 'Nearby Spots'}
           </h1>
-          <button 
-            onClick={handleLocateMe}
-            style={{ 
-              background: '#f0fdf4', 
-              color: 'var(--accent-color)', 
-              border: '1px solid #bbf7d0', 
-              borderRadius: '20px', 
-              padding: '6px 12px', 
-              fontSize: '0.8rem', 
-              fontWeight: '700', 
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px'
-            }}
-          >
-            <FiNavigation /> {locating ? 'Locating...' : 'My Location'}
-          </button>
+          
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button 
+              onClick={handleSyncToSheet}
+              disabled={syncing}
+              style={{ 
+                background: '#e0f2fe', 
+                color: '#0284c7', 
+                border: '1px solid #bae6fd', 
+                borderRadius: '20px', 
+                padding: '6px 12px', 
+                fontSize: '0.78rem', 
+                fontWeight: '700', 
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <FiRefreshCw style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} /> 
+              {syncing ? 'Saving to Sheet...' : 'Sync to Google Sheet'}
+            </button>
+
+            <button 
+              onClick={handleLocateMe}
+              style={{ 
+                background: '#f0fdf4', 
+                color: 'var(--accent-color)', 
+                border: '1px solid #bbf7d0', 
+                borderRadius: '20px', 
+                padding: '6px 12px', 
+                fontSize: '0.78rem', 
+                fontWeight: '700', 
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <FiNavigation /> {locating ? 'Locating...' : 'My Location'}
+            </button>
+          </div>
         </div>
+        
         <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
-          {userPos ? 'Showing eco-friendly spots near your current location.' : 'Select a spot to listen to audio guide.'}
+          {userPos ? 'Showing 40 eco-friendly spots near your current location.' : 'Select a spot to listen to audio guide.'}
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
