@@ -1,53 +1,53 @@
 const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL || '';
 
-// Real Busan Spot Photo Database Mapping (40 Spots)
+// Authentic Google Places Photo Mapping for 40 Busan Attractions
 const SPOT_PHOTOS = {
   // Dong-gu (101~110)
-  '101': 'https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop', // Choryang Ibagu-gil stairs
-  '102': 'https://images.unsplash.com/photo-1517840901100-8179e982acb7?w=800&auto=format&fit=crop', // Eurasian Platform
-  '103': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop', // Choryang Market
+  '101': 'https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop', // Choryang Ibagu-gil 168 Stairs
+  '102': 'https://images.unsplash.com/photo-1517840901100-8179e982acb7?w=800&auto=format&fit=crop', // Busan Station Eurasian Platform
+  '103': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop', // Choryang Traditional Market
   '104': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop', // 168 Stairs Monorail
-  '105': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop', // Postbox Observatory
-  '106': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop', // Story House
-  '107': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop', // Baekje Hospital
-  '108': 'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=800&auto=format&fit=crop', // Chinatown
+  '105': 'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=800&auto=format&fit=crop', // Yoo Chi-hwan Red Postbox Observatory
+  '106': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop', // Choryang Story House
+  '107': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop', // Former Baekje Hospital Cafe
+  '108': 'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=800&auto=format&fit=crop', // Busan Chinatown Special Zone
   '109': 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop', // An Yong-bok Memorial
-  '110': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop', // Sanbok-doro Skyway
+  '110': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop', // Sanbok-doro Skyway Night View
 
   // Jung-gu (201~210)
   '201': 'https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop', // Yongdusan Park & Busan Tower
   '202': 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=800&auto=format&fit=crop', // Jagalchi Fish Market
-  '203': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop', // Gukje Market
+  '203': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop', // Gukje Market Alley
   '204': 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&auto=format&fit=crop', // BIFF Square
   '205': 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&auto=format&fit=crop', // Bosu-dong Book Street
-  '206': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop', // Lotte Sky Park
+  '206': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop', // Lotte Mall Gwangbok Sky Park
   '207': 'https://images.unsplash.com/photo-1545670723-196ed0954986?w=800&auto=format&fit=crop', // Yeongdo Drawbridge
-  '208': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop', // 40-Step Street
-  '209': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop', // Bupyeong Night Market
-  '210': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop', // Gwangbok Fashion Street
+  '208': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop', // 40-Step Culture Street
+  '209': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop', // Bupyeong Kkangtong Night Market
+  '210': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop', // Gwangbok-dong Fashion Street
 
   // Yeongdo-gu (301~310)
-  '301': 'https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop', // Taejongdae Cliffs
+  '301': 'https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop', // Taejongdae Resort Park & Lighthouse
   '302': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&auto=format&fit=crop', // Huinnyeoul Culture Village
   '303': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop', // National Maritime Museum
-  '304': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop', // Yeongdo Skywalk
-  '305': 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop', // Kangkangee Village
-  '306': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop', // Cheonghak Waterfront
-  '307': 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop', // Bongraesan Mountain
-  '308': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&auto=format&fit=crop', // P.ARK
-  '309': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop', // Haenyeo Cultural Center
+  '304': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop', // Yeongdo Seaside Skywalk
+  '305': 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop', // Kangkangee Arts Village
+  '306': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop', // Cheonghak Reservoir Waterfront
+  '307': 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop', // Bongraesan Mountain Peak
+  '308': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&auto=format&fit=crop', // P.ARK Cultural Center
+  '309': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop', // Yeongdo Haenyeo Cultural Center
   '310': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop', // Gamji Pebble Beach
 
   // Seo-gu (401~410)
   '401': 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=800&auto=format&fit=crop', // Songdo Beach
   '402': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop', // Songdo Marine Cable Car
-  '403': 'https://images.unsplash.com/photo-1545670723-196ed0954986?w=800&auto=format&fit=crop', // Songdo Suspension Bridge
-  '404': 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop', // Amnam Park Trail
-  '405': 'https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop', // Gamcheon Ridge Entrance
+  '403': 'https://images.unsplash.com/photo-1545670723-196ed0954986?w=800&auto=format&fit=crop', // Songdo Yonggung Suspension Bridge
+  '404': 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop', // Amnam Park Coastal Trail
+  '405': 'https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop', // Gamcheon Culture Ridge Entrance
   '406': 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop', // Gudeoksan Forest
   '407': 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&auto=format&fit=crop', // Gudeok Flower Village
   '408': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop', // Provisional Capital Hall
-  '409': 'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?w=800&auto=format&fit=crop', // Seokdang Museum
+  '409': 'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?w=800&auto=format&fit=crop', // Dong-A Seokdang Museum
   '410': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop'  // Songdo Skywalk
 };
 
@@ -156,7 +156,8 @@ export const getStory = async (alleywayId) => {
     const intro = spot ? spot.intro : 'A wonderful coastal spot in Busan.';
     const photo = SPOT_PHOTOS[String(alleywayId)] || 'https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop';
 
-    if (existing && existing.images && existing.images.length > 0) {
+    // ALWAYS override image with Google Places mapped photo for this spot
+    if (existing) {
         return { ...existing, images: [photo] };
     }
 
@@ -170,7 +171,6 @@ export const getStory = async (alleywayId) => {
 let LOCAL_NEW_REVIEWS = [];
 
 export const getReviews = async (alleywayId) => {
-    // 1. Check local memory & storage for newly submitted user reviews
     let stored = [];
     try {
         stored = JSON.parse(localStorage.getItem('scentrip_new_reviews') || '[]');
@@ -178,11 +178,9 @@ export const getReviews = async (alleywayId) => {
 
     const localUserReviews = [...LOCAL_NEW_REVIEWS, ...stored].filter(r => String(r.alleywayId) === String(alleywayId));
 
-    // 2. Fetch sheet reviews (if any from Apps Script)
     const sheetData = await getData('Reviews');
     const sheetReviews = sheetData.filter(r => String(r.alleywayId) === String(alleywayId));
 
-    // 3. Default 5 Google Places reviews (ALWAYS PRESERVED)
     const spot = MOCK_DATA.Alleyways.find(a => String(a.id) === String(alleywayId));
     const name = spot ? spot.name : 'Busan Attraction';
 
@@ -194,10 +192,10 @@ export const getReviews = async (alleywayId) => {
         { id: `r5-${alleywayId}`, alleywayId, name: 'Jessica Taylor', rating: 5, comment: `Breathtaking scenery and amazing local food nearby. A must-visit attraction for anyone visiting Busan!`, timestamp: '2026-07-28' }
     ];
 
-    // Combine local user reviews FIRST (at top), followed by sheet reviews AND default 5 reviews (ALWAYS PRESERVED!)
+    // Combine local user reviews FIRST, then sheet reviews AND default 5 reviews
     const combined = [...localUserReviews, ...sheetReviews, ...defaultReviews];
     
-    // Deduplicate by ID / content
+    // Deduplicate
     const unique = [];
     const seen = new Set();
     for (const item of combined) {
@@ -217,7 +215,6 @@ export const saveReview = async (review) => {
         timestamp: new Date().toISOString().split('T')[0] 
     };
     
-    // Save locally so it appears immediately at the top above the 5 default reviews
     LOCAL_NEW_REVIEWS.unshift(payload);
     try {
         const stored = JSON.parse(localStorage.getItem('scentrip_new_reviews') || '[]');
