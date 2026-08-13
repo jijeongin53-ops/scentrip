@@ -76,7 +76,7 @@ function AppContent({ user, handleLogin, handleLogout }) {
       
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home user={user} onLogin={handleLogin} />} />
           <Route path="/explore" element={<MapDirectory />} />
           <Route path="/guide" element={<Guide />} />
           <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
