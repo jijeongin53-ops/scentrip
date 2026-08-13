@@ -87,11 +87,11 @@ const Home = ({ user, onLogin }) => {
           border: '1px solid #f1f5f9' 
         }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--header-bg)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <FiLogIn style={{ color: 'var(--accent-color)' }} /> 회원가입 / 로그인
+            <FiLogIn style={{ color: 'var(--accent-color)' }} /> Sign Up / Login
           </h3>
           <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.3rem', fontWeight: '600' }}>이메일 (Email)</label>
+              <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.3rem', fontWeight: '600' }}>Email Address</label>
               <input 
                 type="email" 
                 placeholder="example@email.com"
@@ -102,10 +102,10 @@ const Home = ({ user, onLogin }) => {
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.3rem', fontWeight: '600' }}>이름 (Name)</label>
+              <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.3rem', fontWeight: '600' }}>Full Name</label>
               <input 
                 type="text" 
-                placeholder="홍길동"
+                placeholder="John Doe"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -118,7 +118,7 @@ const Home = ({ user, onLogin }) => {
               disabled={loading}
               style={{ padding: '0.9rem', fontSize: '1rem', marginTop: '0.4rem', opacity: loading ? 0.7 : 1 }}
             >
-              {loading ? '구글시트에 저장 중...' : '간편 회원가입 / 로그인하기'}
+              {loading ? 'Saving to Google Sheet...' : 'Quick Sign Up / Login'}
             </button>
           </form>
         </div>
@@ -136,8 +136,8 @@ const Home = ({ user, onLogin }) => {
         }}>
           <FiUserCheck style={{ fontSize: '1.8rem', color: 'var(--accent-color)' }} />
           <div>
-            <div style={{ fontWeight: '700', color: 'var(--header-bg)' }}>{user.name}님 환영합니다!</div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{user.email} (구글 시트 연동 완료)</div>
+            <div style={{ fontWeight: '700', color: 'var(--header-bg)' }}>Welcome, {user.name}!</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{user.email} (Linked with Google Sheet)</div>
           </div>
         </div>
       )}
