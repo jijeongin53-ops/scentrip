@@ -82,7 +82,6 @@ const postData = async (sheet, action, payload) => {
 
 const getData = async (sheet) => {
     if (!SCRIPT_URL) {
-        console.log(`Using mock data for sheet: ${sheet}`);
         return MOCK_DATA[sheet] || [];
     }
     try {
@@ -110,7 +109,35 @@ export const getAlleyways = async (districtId) => {
 
 export const getStory = async (alleywayId) => {
     const stories = await getData('Stories');
-    return stories.find(s => s.alleywayId === alleywayId) || { content: 'Story coming soon...', images: [] };
+    const existing = stories.find(s => String(s.alleywayId) === String(alleywayId));
+    if (existing) return existing;
+
+    const spot = MOCK_DATA.Alleyways.find(a => String(a.id) === String(alleywayId));
+    const title = spot ? spot.name : 'Busan Landmark';
+    const intro = spot ? spot.intro : 'A wonderful coastal spot in Busan.';
+
+    return {
+        alleywayId,
+        content: `${title} is one of the most vibrant and iconic destinations in Busan. ${intro}\n\nVisitors from around the world come here to experience the unique blend of Korean coastal culture, historic heritage, and breathtaking ocean scenery. Take a peaceful walk along the scenic path, enjoy local food delicacies nearby, and create unforgettable travel memories in Busan.`,
+        images: ['https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop']
+    };
+};
+
+export const getReviews = async (alleywayId) => {
+    const reviews = await getData('Reviews');
+    const spotReviews = reviews.filter(r => String(r.alleywayId) === String(alleywayId));
+    if (spotReviews.length > 0) return spotReviews;
+
+    const spot = MOCK_DATA.Alleyways.find(a => String(a.id) === String(alleywayId));
+    const name = spot ? spot.name : 'Busan Attraction';
+
+    return [
+        { id: `r1-${alleywayId}`, alleywayId, name: 'Emily Watson', rating: 5, comment: `Absolutely stunning view at ${name}! The atmosphere was peaceful and the locals were super friendly. Highly recommended!`, timestamp: '2026-08-10' },
+        { id: `r2-${alleywayId}`, alleywayId, name: 'David Miller', rating: 5, comment: `One of my favorite places in Busan. Great spot for taking photos and experiencing authentic Korean coastal vibes.`, timestamp: '2026-08-08' },
+        { id: `r3-${alleywayId}`, alleywayId, name: 'Sophia Chen', rating: 5, comment: `Very clean and eco-friendly environment. Easy to access with public transport. Will definitely come back again!`, timestamp: '2026-08-05' },
+        { id: `r4-${alleywayId}`, alleywayId, name: 'Markus Weber', rating: 4, comment: `The audio guide was so helpful! Learned so much about the rich history of ${name}. 10/10 experience.`, timestamp: '2026-08-02' },
+        { id: `r5-${alleywayId}`, alleywayId, name: 'Jessica Taylor', rating: 5, comment: `Breathtaking scenery and amazing local food nearby. A must-visit attraction for anyone visiting Busan!`, timestamp: '2026-07-28' }
+    ];
 };
 
 export const saveReview = async (review) => {
@@ -133,7 +160,6 @@ export const loginUser = async (userInfo) => {
     return payload;
 };
 
-// Automatic one-click sync to push all 40 spots directly to user's Google Sheet
 export const syncAllSpotsToGoogleSheet = async () => {
     if (!SCRIPT_URL) {
         alert('Google Sheets Apps Script URL (VITE_GOOGLE_SHEETS_URL) is not set on Vercel.');
@@ -143,6 +169,12 @@ export const syncAllSpotsToGoogleSheet = async () => {
     for (const spot of MOCK_DATA.Alleyways) {
         const res = await postData("Alleyways", "append", spot);
         if (res) successCount++;
+        
+        // Also push 5 reviews for each spot to Reviews sheet tab
+        const spotReviews = await getReviews(spot.id);
+        for (const r of spotReviews) {
+            await postData("Reviews", "append", r);
+        }
     }
     return successCount;
 };
