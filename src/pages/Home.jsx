@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMapPin, FiSmile, FiActivity, FiUserCheck, FiLogIn } from 'react-icons/fi';
+import { FiMapPin, FiSmile, FiActivity, FiUserCheck, FiLogIn, FiPlay, FiPause } from 'react-icons/fi';
 import { loginUser } from '../services/googleSheets';
 
 const Home = ({ user, onLogin }) => {
   const navigate = useNavigate();
   const [steps, setSteps] = useState(0);
+  const [isTracking, setIsTracking] = useState(false);
 
   // Auth form state
   const [email, setEmail] = useState('');
@@ -23,21 +24,26 @@ const Home = ({ user, onLogin }) => {
     }
   };
 
-  // Mock pedometer/walking feature logic
+  // Step counter logic: starts at 0, counts ONLY when user starts tracking
   useEffect(() => {
-    const savedSteps = parseInt(localStorage.getItem('scentrip_steps') || '8432');
-    setSteps(savedSteps);
-    
-    const interval = setInterval(() => {
-      setSteps(prev => {
-        const newSteps = prev + Math.floor(Math.random() * 3);
-        localStorage.setItem('scentrip_steps', newSteps.toString());
-        return newSteps;
-      });
-    }, 5000);
-    
+    let interval = null;
+    if (isTracking) {
+      interval = setInterval(() => {
+        setSteps(prev => {
+          const newSteps = prev + 1;
+          localStorage.setItem('scentrip_steps', newSteps.toString());
+          return newSteps;
+        });
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
     return () => clearInterval(interval);
-  }, []);
+  }, [isTracking]);
+
+  const toggleTracking = () => {
+    setIsTracking(!isTracking);
+  };
 
   return (
     <div className="page-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -148,9 +154,24 @@ const Home = ({ user, onLogin }) => {
           <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <FiActivity style={{ color: 'var(--accent-color)' }} /> Walking Tracker
           </h3>
-          <span style={{ fontSize: '0.8rem', color: 'var(--accent-color)', fontWeight: '600', background: '#f0fdf4', padding: '4px 8px', borderRadius: '12px' }}>
-            Active
-          </span>
+          <button 
+            onClick={toggleTracking}
+            style={{ 
+              fontSize: '0.8rem', 
+              fontWeight: '600', 
+              color: isTracking ? '#ef4444' : 'var(--accent-color)', 
+              background: isTracking ? '#fef2f2' : '#f0fdf4', 
+              padding: '6px 12px', 
+              borderRadius: '12px',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            {isTracking ? <><FiPause /> Pause</> : <><FiPlay /> Start Walking</>}
+          </button>
         </div>
         
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.5rem' }}>
