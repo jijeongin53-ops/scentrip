@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 're
 import Home from './pages/Home';
 import Districts from './pages/Districts';
 import MapDirectory from './pages/MapDirectory';
+import Story from './pages/Story';
+import Review from './pages/Review';
 import Guide from './pages/Guide';
 import Profile from './pages/Profile';
 import Auth from './pages/Auth';
@@ -78,6 +80,8 @@ function AppContent({ user, handleLogin, handleLogout }) {
         <Routes>
           <Route path="/" element={<Home user={user} onLogin={handleLogin} />} />
           <Route path="/explore" element={<MapDirectory />} />
+          <Route path="/story/:id" element={<Story />} />
+          <Route path="/review/:id" element={<Review user={user} />} />
           <Route path="/guide" element={<Guide />} />
           <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
           <Route path="/auth" element={<Auth onLogin={handleLogin} />} />
