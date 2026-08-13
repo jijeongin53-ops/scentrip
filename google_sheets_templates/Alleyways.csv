@@ -1,13 +1,41 @@
 id,districtId,name,lat,lng,intro
-101,1,Haeundae Beach,35.1587,129.1604,Busan iconic beach known for soft white sand and vibrant coastal views.
-102,1,Haeundae Blueline Park,35.1536,129.1834,Scenic oceanfront railway featuring Sky Capsules and beach trains.
-103,1,Busan X the SKY,35.1578,129.1678,Observation deck offering panoramic 360-degree views of Busan coastline.
-104,1,Dalmaji-gil Art Alley,35.1587,129.1764,Charming hill with cafes and art galleries overlooking the sea.
-201,2,Gamcheon Culture Village,35.0970,129.0108,Colorful hillside art community known as the Machu Picchu of Busan.
-202,2,Jagalchi Fish Market,35.0973,129.0287,Koreas largest traditional seafood market with fresh local delicacies.
-203,2,Bosu-dong Book Street,35.1037,129.0279,Nostalgic historic alley filled with vintage secondhand bookstores.
-204,2,Gukje Market Alley,35.1011,129.0298,Bustling international heritage market with endless local street food.
-301,3,Taejongdae Resort Park,35.0514,129.0872,Dramatic coastal cliffs and lighthouse views on Yeongdo Island.
-302,3,Huinnyeoul Culture Village,35.0777,129.0438,Santorini of Korea on a stunning oceanfront cliffside.
-401,4,Haedong Yonggungsa Temple,35.1903,129.2217,Rare coastal Buddhist temple built directly on majestic seaside rocks.
-402,4,Songdo Beach & Cable Car,35.0754,129.0169,Koreas first public beach featuring scenic marine cable cars.
+101,1,Choryang Ibagu-gil,35.1165,129.0385,Historic hillside trail featuring 168 stairs and scenic monorail.
+102,1,Busan Station Eurasian Platform,35.1152,129.0422,Bustling cultural transport hub connecting Eurasia and Busan Port.
+103,1,Choryang Traditional Market,35.1172,129.0398,Historic local market famous for galbi pork rib alleys and Dwaeji Gukbap.
+104,1,168 Stairs Monorail,35.1180,129.0375,Charming scenic monorail providing steep mountain ocean vistas.
+105,1,Yoo Chi-hwan Postbox Observatory,35.1220,129.0360,Scenic postbox rooftop observatory overlooking Busan Port and islands.
+106,1,Choryang Story House,35.1211,129.0371,Historical story gallery preserving Sanbok-doro mountain road memories.
+107,1,Former Baekje Hospital Building,35.1160,129.0405,Busans first modern general hospital building transformed into heritage cafe.
+108,1,Busan Chinatown Special Zone,35.1145,129.0392,Vibrant multicultural alley with Russian bakery and Chinese dumpling flavors.
+109,1,An Yong-bok Memorial Hall,35.1255,129.0340,Historic memorial honoring Dokdo ocean defender An Yong-bok.
+110,1,Sanbok-doro Skyway Road,35.1235,129.0355,Panoramic mountain belt road offering stunning nighttime harbor lights.
+201,2,Yongdusan Park & Busan Tower,35.1006,129.0326,Iconic hilltop park featuring 360-degree panoramic views from Busan Tower.
+202,2,Jagalchi Fish Market,35.0973,129.0287,Koreas premier traditional fresh seafood market right on the harbor.
+203,2,Gukje Market Alley,35.1011,129.0298,Famous post-war heritage market with endless local street food stalls.
+204,2,BIFF Square,35.0991,129.0303,Busan International Film Festival square with handprints and Ssiat Hotteok.
+205,2,Bosu-dong Book Street,35.1037,129.0279,Historic alleyway lined with vintage secondhand bookstores.
+206,2,Lotte Mall Gwangbok Sky Park,35.0985,129.0362,Observatory rooftop garden with sea views of Yeongdo Drawbridge.
+207,2,Yeongdo Drawbridge,35.0962,129.0368,Koreas first bascule drawbridge opening over the sea.
+208,2,40-Step Culture & History Street,35.1042,129.0354,Nostalgic 1950s refugee war memory street lined with bronze statues.
+209,2,Bupyeong Kkangtong Night Market,35.1025,129.0270,Vibrant night market famous for international food stalls and fried fish cakes.
+210,2,Gwangbok-dong Fashion Street,35.0998,129.0315,Bustling shopping artery filled with fashion brands and street artists.
+301,3,Taejongdae Resort Park,35.0514,129.0872,Dramatic coastal cliff park with lighthouse and ocean views.
+302,3,Huinnyeoul Culture Village,35.0777,129.0438,Cliffside art village with white-washed houses over the sea.
+303,3,National Maritime Museum,35.0915,129.0801,Koreas premier ocean museum with huge cylindrical aquarium.
+304,3,Yeongdo Seaside Skywalk,35.0682,129.0450,Glass skywalk platform floating above crashing ocean waves.
+305,3,Kangkangee Arts Village,35.0902,129.0395,Historic shipbuilding yard village transformed with vibrant street murals.
+306,3,Cheonghak Reservoir Waterfront Park,35.0965,129.0620,Night view hotspot overlooking Busan Harbor Bridge colorful lights.
+307,3,Bongraesan Mountain Peak,35.0792,129.0605,Central Yeongdo mountain peak providing 360-degree Busan vistas.
+308,3,P.ARK Cultural Center,35.0885,129.0725,Massive coastal architectural hub featuring oceanfront specialty coffee.
+309,3,Yeongdo Haenyeo Cultural Center,35.0560,129.0820,Exhibition and fresh seafood hall celebrating female sea divers.
+310,3,Gamji Pebble Beach,35.0485,129.0810,Picturesque pebble beach famous for fresh grilled clam tents.
+401,4,Songdo Beach,35.0754,129.0169,Koreas first official public beach with soft golden sand.
+402,4,Songdo Marine Cable Car,35.0740,129.0185,Scenic cable car gliding 86m high across Songdo ocean bay.
+403,4,Songdo Yonggung Suspension Bridge,35.0670,129.0230,Thrilling cliffside suspension bridge connecting to uninhabited island.
+404,4,Amnam Park Coastal Trail,35.0655,129.0205,Forested coastal cliff park with scenic pine walking paths.
+405,4,Gamcheon Culture Ridge (Seo-gu Entrance),35.0980,129.0090,Western entrance to Gamcheon with panoramic ridge walking trail.
+406,4,Gudeoksan Recreational Forest,35.1215,128.9980,Peaceful mountain retreat with cypress forests and hiking trails.
+407,4,Gudeok Flower Village,35.1230,129.0015,Rustic mountain village famous for wild flowers and herbal dishes.
+408,4,Provisional Capital Memorial Hall,35.1030,129.0180,Historical residence of Korean War President Rhee Syngman.
+409,4,Dong-A University Seokdang Museum,35.1045,129.0195,National heritage museum showcasing ancient Korean artifacts.
+410,4,Songdo Skywalk,35.0760,129.0190,Curved ocean walkway extending 365m over crystal clear waters.

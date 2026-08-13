@@ -1,40 +1,67 @@
 const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL || '';
 
-// Automatically crawled Busan tourist spots & mock data
+// 4 Districts (Dong-gu, Jung-gu, Yeongdo-gu, Seo-gu) with 10 spots each (40 spots total)
 const MOCK_DATA = {
   Districts: [
-    { id: '1', name: 'Haeundae-gu', image: 'https://images.unsplash.com/photo-1542838685-6495df025cd0?auto=format&fit=crop&w=800', description: 'Beaches and modern cityscapes' },
-    { id: '2', name: 'Jung-gu & Saha-gu', image: 'https://images.unsplash.com/photo-1617469165786-8007eda3caa7?auto=format&fit=crop&w=800', description: 'Historic markets and culture' },
-    { id: '3', name: 'Yeongdo-gu', image: 'https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?auto=format&fit=crop&w=800', description: 'Ocean views and art villages' },
-    { id: '4', name: 'Gijang & Seo-gu', image: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=800', description: 'Cable cars and ocean temples' }
+    { id: '1', name: 'Dong-gu', image: 'https://images.unsplash.com/photo-1542838685-6495df025cd0?auto=format&fit=crop&w=800', description: 'Hillside monorails, history trails & harbor views' },
+    { id: '2', name: 'Jung-gu', image: 'https://images.unsplash.com/photo-1617469165786-8007eda3caa7?auto=format&fit=crop&w=800', description: 'Busan Tower, Jagalchi market & heritage streets' },
+    { id: '3', name: 'Yeongdo-gu', image: 'https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?auto=format&fit=crop&w=800', description: 'Taejongdae cliffs, ocean villages & skywalks' },
+    { id: '4', name: 'Seo-gu', image: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=800', description: 'Songdo marine cable car, beaches & suspension bridges' }
   ],
   Alleyways: [
-    { id: '101', districtId: '1', name: 'Haeundae Beach', lat: 35.1587, lng: 129.1604, intro: 'Busan iconic beach, known for soft white sand and vibrant coastal views.' },
-    { id: '102', districtId: '1', name: 'Haeundae Blueline Park', lat: 35.1536, lng: 129.1834, intro: 'Scenic oceanfront railway featuring Sky Capsules and beach trains.' },
-    { id: '103', districtId: '1', name: 'Busan X the SKY', lat: 35.1578, lng: 129.1678, intro: 'Observation deck offering panoramic 360-degree views of Busan coastline.' },
-    { id: '104', districtId: '1', name: 'Dalmaji-gil Art Alley', lat: 35.1587, lng: 129.1764, intro: 'Charming hill with cafes and art galleries overlooking the sea.' },
-    { id: '201', districtId: '2', name: 'Gamcheon Culture Village', lat: 35.0970, lng: 129.0108, intro: 'Colorful hillside art community known as the Machu Picchu of Busan.' },
-    { id: '202', districtId: '2', name: 'Jagalchi Fish Market', lat: 35.0973, lng: 129.0287, intro: 'Koreas largest traditional seafood market with fresh local delicacies.' },
-    { id: '203', districtId: '2', name: 'Bosu-dong Book Street', lat: 35.1037, lng: 129.0279, intro: 'Nostalgic historic alley filled with vintage secondhand bookstores.' },
-    { id: '204', districtId: '2', name: 'Gukje Market Alley', lat: 35.1011, lng: 129.0298, intro: 'Bustling international heritage market with endless local street food.' },
-    { id: '301', districtId: '3', name: 'Taejongdae Resort Park', lat: 35.0514, lng: 129.0872, intro: 'Dramatic coastal cliffs and lighthouse views on Yeongdo Island.' },
-    { id: '302', districtId: '3', name: 'Huinnyeoul Culture Village', lat: 35.0777, lng: 129.0438, intro: 'Santorini of Korea on a stunning oceanfront cliffside.' },
-    { id: '401', districtId: '4', name: 'Haedong Yonggungsa Temple', lat: 35.1903, lng: 129.2217, intro: 'Rare coastal Buddhist temple built directly on majestic seaside rocks.' },
-    { id: '402', districtId: '4', name: 'Songdo Beach & Cable Car', lat: 35.0754, lng: 129.0169, intro: 'Koreas first public beach featuring scenic marine cable cars.' }
+    // --- Dong-gu (10 Spots) ---
+    { id: '101', districtId: '1', name: 'Choryang Ibagu-gil', lat: 35.1165, lng: 129.0385, intro: 'Historic hillside trail featuring 168 stairs and scenic monorail.' },
+    { id: '102', districtId: '1', name: 'Busan Station Eurasian Platform', lat: 35.1152, lng: 129.0422, intro: 'Bustling cultural transport hub connecting Eurasia and Busan Port.' },
+    { id: '103', districtId: '1', name: 'Choryang Traditional Market', lat: 35.1172, lng: 129.0398, intro: 'Historic local market famous for galbi pork rib alleys and Dwaeji Gukbap.' },
+    { id: '104', districtId: '1', name: '168 Stairs Monorail', lat: 35.1180, lng: 129.0375, intro: 'Charming scenic monorail providing steep mountain ocean vistas.' },
+    { id: '105', districtId: '1', name: 'Yoo Chi-hwan Postbox Observatory', lat: 35.1220, lng: 129.0360, intro: 'Scenic postbox rooftop observatory overlooking Busan Port and islands.' },
+    { id: '106', districtId: '1', name: 'Choryang Story House', lat: 35.1211, lng: 129.0371, intro: 'Historical story gallery preserving Sanbok-doro mountain road memories.' },
+    { id: '107', districtId: '1', name: 'Former Baekje Hospital Building', lat: 35.1160, lng: 129.0405, intro: 'Busans first modern general hospital building transformed into heritage cafe.' },
+    { id: '108', districtId: '1', name: 'Busan Chinatown Special Zone', lat: 35.1145, lng: 129.0392, intro: 'Vibrant multicultural alley with Russian bakery and Chinese dumpling flavors.' },
+    { id: '109', districtId: '1', name: 'An Yong-bok Memorial Hall', lat: 35.1255, lng: 129.0340, intro: 'Historic memorial honoring Dokdo ocean defender An Yong-bok.' },
+    { id: '110', districtId: '1', name: 'Sanbok-doro Skyway Road', lat: 35.1235, lng: 129.0355, intro: 'Panoramic mountain belt road offering stunning nighttime harbor lights.' },
+
+    // --- Jung-gu (10 Spots) ---
+    { id: '201', districtId: '2', name: 'Yongdusan Park & Busan Tower', lat: 35.1006, lng: 129.0326, intro: 'Iconic hilltop park featuring 360-degree panoramic views from Busan Tower.' },
+    { id: '202', districtId: '2', name: 'Jagalchi Fish Market', lat: 35.0973, lng: 129.0287, intro: 'Koreas premier traditional fresh seafood market right on the harbor.' },
+    { id: '203', districtId: '2', name: 'Gukje Market Alley', lat: 35.1011, lng: 129.0298, intro: 'Famous post-war heritage market with endless local street food stalls.' },
+    { id: '204', districtId: '2', name: 'BIFF Square', lat: 35.0991, lng: 129.0303, intro: 'Busan International Film Festival square with handprints and Ssiat Hotteok.' },
+    { id: '205', districtId: '2', name: 'Bosu-dong Book Street', lat: 35.1037, lng: 129.0279, intro: 'Historic alleyway lined with vintage secondhand bookstores.' },
+    { id: '206', districtId: '2', name: 'Lotte Mall Gwangbok Sky Park', lat: 35.0985, lng: 129.0362, intro: 'Observatory rooftop garden with sea views of Yeongdo Drawbridge.' },
+    { id: '207', districtId: '2', name: 'Yeongdo Drawbridge', lat: 35.0962, lng: 129.0368, intro: 'Koreas first bascule drawbridge opening over the sea.' },
+    { id: '208', districtId: '2', name: '40-Step Culture & History Street', lat: 35.1042, lng: 129.0354, intro: 'Nostalgic 1950s refugee war memory street lined with bronze statues.' },
+    { id: '209', districtId: '2', name: 'Bupyeong Kkangtong Night Market', lat: 35.1025, lng: 129.0270, intro: 'Vibrant night market famous for international food stalls and fried fish cakes.' },
+    { id: '210', districtId: '2', name: 'Gwangbok-dong Fashion Street', lat: 35.0998, lng: 129.0315, intro: 'Bustling shopping artery filled with fashion brands and street artists.' },
+
+    // --- Yeongdo-gu (10 Spots) ---
+    { id: '301', districtId: '3', name: 'Taejongdae Resort Park', lat: 35.0514, lng: 129.0872, intro: 'Dramatic coastal cliff park with lighthouse and ocean views.' },
+    { id: '302', districtId: '3', name: 'Huinnyeoul Culture Village', lat: 35.0777, lng: 129.0438, intro: 'Cliffside art village with white-washed houses over the sea.' },
+    { id: '303', districtId: '3', name: 'National Maritime Museum', lat: 35.0915, lng: 129.0801, intro: 'Koreas premier ocean museum with huge cylindrical aquarium.' },
+    { id: '304', districtId: '3', name: 'Yeongdo Seaside Skywalk', lat: 35.0682, lng: 129.0450, intro: 'Glass skywalk platform floating above crashing ocean waves.' },
+    { id: '305', districtId: '3', name: 'Kangkangee Arts Village', lat: 35.0902, lng: 129.0395, intro: 'Historic shipbuilding yard village transformed with vibrant street murals.' },
+    { id: '306', districtId: '3', name: 'Cheonghak Reservoir Waterfront Park', lat: 35.0965, lng: 129.0620, intro: 'Night view hotspot overlooking Busan Harbor Bridge colorful lights.' },
+    { id: '307', districtId: '3', name: 'Bongraesan Mountain Peak', lat: 35.0792, lng: 129.0605, intro: 'Central Yeongdo mountain peak providing 360-degree Busan vistas.' },
+    { id: '308', districtId: '3', name: 'P.ARK Cultural Center', lat: 35.0885, lng: 129.0725, intro: 'Massive coastal architectural hub featuring oceanfront specialty coffee.' },
+    { id: '309', districtId: '3', name: 'Yeongdo Haenyeo Cultural Center', lat: 35.0560, lng: 129.0820, intro: 'Exhibition and fresh seafood hall celebrating female sea divers.' },
+    { id: '310', districtId: '3', name: 'Gamji Pebble Beach', lat: 35.0485, lng: 129.0810, intro: 'Picturesque pebble beach famous for fresh grilled clam tents.' },
+
+    // --- Seo-gu (10 Spots) ---
+    { id: '401', districtId: '4', name: 'Songdo Beach', lat: 35.0754, lng: 129.0169, intro: 'Koreas first official public beach with soft golden sand.' },
+    { id: '402', districtId: '4', name: 'Songdo Marine Cable Car', lat: 35.0740, lng: 129.0185, intro: 'Scenic cable car gliding 86m high across Songdo ocean bay.' },
+    { id: '403', districtId: '4', name: 'Songdo Yonggung Suspension Bridge', lat: 35.0670, lng: 129.0230, intro: 'Thrilling cliffside suspension bridge connecting to uninhabited island.' },
+    { id: '404', districtId: '4', name: 'Amnam Park Coastal Trail', lat: 35.0655, lng: 129.0205, intro: 'Forested coastal cliff park with scenic pine walking paths.' },
+    { id: '405', districtId: '4', name: 'Gamcheon Culture Ridge (Seo-gu Entrance)', lat: 35.0980, lng: 129.0090, intro: 'Western entrance to Gamcheon with panoramic ridge walking trail.' },
+    { id: '406', districtId: '4', name: 'Gudeoksan Recreational Forest', lat: 35.1215, lng: 128.9980, intro: 'Peaceful mountain retreat with cypress forests and hiking trails.' },
+    { id: '407', districtId: '4', name: 'Gudeok Flower Village', lat: 35.1230, lng: 129.0015, intro: 'Rustic mountain village famous for wild flowers and herbal dishes.' },
+    { id: '408', districtId: '4', name: 'Provisional Capital Memorial Hall', lat: 35.1030, lng: 129.0180, intro: 'Historical residence of Korean War President Rhee Syngman.' },
+    { id: '409', districtId: '4', name: 'Dong-A University Seokdang Museum', lat: 35.1045, lng: 129.0195, intro: 'National heritage museum showcasing ancient Korean artifacts.' },
+    { id: '410', districtId: '4', name: 'Songdo Skywalk', lat: 35.0760, lng: 129.0190, intro: 'Curved ocean walkway extending 365m over crystal clear waters.' }
   ],
   Stories: [
-    { alleywayId: '101', content: 'Haeundae Beach is the undisputed heart of Busan summer energy. Stretching 1.5 kilometers, it offers clear blue waters, fine white sand, and vibrant festival vibes year-round.', images: ['https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop'] },
-    { alleywayId: '102', content: 'Haeundae Blueline Park transforms the former Donghae Nambu Railway line into an eco-friendly coastal park. Ride colorful Sky Capsules 7 to 10 meters above the ground with sea views.', images: ['https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=800&auto=format&fit=crop'] },
-    { alleywayId: '103', content: 'Located on the 98th to 100th floors of LCT Tower, Busan X the SKY is Koreas second highest observation deck, offering unmatched panoramic views of Haeundae Beach and Gwangan Bridge.', images: ['https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop'] },
-    { alleywayId: '104', content: 'Dalmaji-gil is a beloved scenic road lined with pine and cherry blossom trees. It is famous for its cozy cafes, fine art galleries, and romantic moonlit ocean vistas.', images: ['https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop'] },
-    { alleywayId: '201', content: 'Gamcheon Culture Village was built by Korean War refugees on steep mountain slopes. Today, its pastel-colored houses, alleyway murals, and art sculptures attract visitors worldwide.', images: ['https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop'] },
-    { alleywayId: '202', content: 'Jagalchi Market is Koreas premier seafood hub. Run largely by resilient Jagalchi Ajumma (wives), you can pick live seafood on the 1st floor and enjoy it freshly prepared on the 2nd.', images: ['https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&auto=format&fit=crop'] },
-    { alleywayId: '203', content: 'Bosu-dong Book Street originated during the Korean War when families sold precious books for food. Today, it remains a rare treasure trove of rare vintage books and peaceful cafes.', images: ['https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&auto=format&fit=crop'] },
-    { alleywayId: '204', content: 'Gukje Market has been a bustling commercial heart since 1945. Explore narrow aisles packed with fashion, electronics, and legendary local street food like seed hotteok and tteokbokki.', images: ['https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=800&auto=format&fit=crop'] },
-    { alleywayId: '301', content: 'Taejongdae is a magnificent natural park located at the southern tip of Yeongdo Island. Dense pine forests, steep seaside cliffs, and Yeongdo Lighthouse provide dramatic sea vistas.', images: ['https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop'] },
-    { alleywayId: '302', content: 'Huinnyeoul Culture Village clings to the rocky cliffs of Yeongdo Island. Its winding coastal walkways, oceanview cafes, and blue-tinted houses offer a Greek island-like atmosphere.', images: ['https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop'] },
-    { alleywayId: '401', content: 'Haedong Yonggungsa is one of the few oceanfront temples in Korea. Founded in 1376, it sits perched on rugged rocky shores where waves crash against ancient Buddhist pagodas.', images: ['https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop'] },
-    { alleywayId: '402', content: 'Songdo Beach is Koreas oldest official public beach. Glide 86 meters above the ocean in the Songdo Marine Cable Car for breathtaking aerial views of the coastline and skywalk.', images: ['https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=800&auto=format&fit=crop'] }
+    { alleywayId: '101', content: 'Choryang Ibagu-gil tells the poignant story of Busan hill culture. Climbing the 168 stairs reveals the resilience of workers who built Busan into a major global harbor city.', images: ['https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop'] },
+    { alleywayId: '201', content: 'Yongdusan Park is home to the 120-meter tall Busan Tower. Standing atop Yongdusan Mountain, it has offered travelers majestic harbor views since 1973.', images: ['https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop'] },
+    { alleywayId: '301', content: 'Taejongdae Resort Park features majestic cliffs carved by ocean waves over thousands of years. Named after King Muyeol of Silla, it offers unforgettable lighthouse sea vistas.', images: ['https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop'] },
+    { alleywayId: '401', content: 'Songdo Beach opened in 1913 as Koreas first public beach. Combined with the Songdo Marine Cable Car and Skywalk, it offers thrilling coastal adventures.', images: ['https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=800&auto=format&fit=crop'] }
   ]
 };
 
