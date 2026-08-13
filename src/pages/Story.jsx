@@ -109,7 +109,7 @@ const Story = () => {
 
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <a 
-            href="https://smartstore.naver.com/scentrip" 
+            href="https://www.sixshop.com/thehuelab/product/SCENTRIP-EN" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="btn-primary"
