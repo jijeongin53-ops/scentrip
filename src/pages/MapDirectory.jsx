@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { getAlleyways, getDistricts } from '../services/googleSheets';
 import { useLanguage, translations } from '../LanguageContext';
-import { FiNavigation, FiMapPin } from 'react-icons/fi';
+import { FiNavigation, FiMapPin, FiVolume2, FiSquare } from 'react-icons/fi';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -89,6 +89,43 @@ const MapDirectory = () => {
   const [loading, setLoading] = useState(true);
   const [userPos, setUserPos] = useState(null);
   const [locating, setLocating] = useState(false);
+  const [playingId, setPlayingId] = useState(null);
+
+  // English Audio Guide (Web Speech API Text-to-Speech)
+  const speakAudioGuide = (spotId, title, intro) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel(); // Stop any previous speech
+      
+      if (playingId === spotId) {
+        setPlayingId(null);
+        return;
+      }
+
+      const textToSpeak = `Audio guide for ${title}. ${intro}`;
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.95;
+
+      utterance.onend = () => {
+        setPlayingId(null);
+      };
+      utterance.onerror = () => {
+        setPlayingId(null);
+      };
+
+      setPlayingId(spotId);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert('Audio guide (Text-To-Speech) is not supported in this browser.');
+    }
+  };
+
+  const stopAudioGuide = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setPlayingId(null);
+    }
+  };
 
   // Request Geolocation
   const handleLocateMe = () => {
@@ -102,7 +139,6 @@ const MapDirectory = () => {
         },
         (error) => {
           console.warn('Geolocation error:', error);
-          // Fallback to Haeundae/Busan center if location denied
           setUserPos([35.1631, 129.1636]);
           setLocating(false);
         },
@@ -125,18 +161,22 @@ const MapDirectory = () => {
       setLoading(false);
     };
     fetchData();
-    // Auto locate on mount
     handleLocateMe();
+
+    // Clean up audio on unmount
+    return () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
   }, [id]);
 
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>{t.loading || 'Loading...'}</div>;
   }
 
-  // Map center logic: User position first, or fallback to first spot/Busan center
   const mapCenter = userPos || (alleyways.length > 0 ? [alleyways[0].lat, alleyways[0].lng] : [35.1796, 129.0756]);
 
-  // Sort alleyways by distance to user if user position is available
   const sortedAlleyways = [...alleyways].map(alley => {
     const dist = userPos ? calculateDistance(userPos[0], userPos[1], alley.lat, alley.lng) : null;
     return { ...alley, dist };
@@ -170,39 +210,89 @@ const MapDirectory = () => {
           </button>
         </div>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
-          {userPos ? 'Showing eco-friendly spots near your current location.' : 'Select a spot to uncover its story.'}
+          {userPos ? 'Showing eco-friendly spots near your current location.' : 'Select a spot to listen to audio guide.'}
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {sortedAlleyways.map(alley => (
-            <div 
-              key={alley.id} 
-              className="glass-panel" 
-              style={{ padding: '1.2rem', cursor: 'pointer', transition: 'all 0.3s ease', background: 'white' }}
-              onClick={() => navigate(`/story/${alley.id}`)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--accent-color)';
-                e.currentTarget.style.transform = 'translateX(6px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#e2e8f0';
-                e.currentTarget.style.transform = 'translateX(0)';
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.4rem' }}>
-                <h3 style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: '700' }}>{alley.name}</h3>
-                {alley.dist && (
-                  <span style={{ fontSize: '0.75rem', color: 'var(--accent-color)', fontWeight: '700', background: '#f0fdf4', padding: '2px 8px', borderRadius: '10px' }}>
-                    <FiMapPin style={{ display: 'inline', marginRight: '2px' }} />{alley.dist} km
-                  </span>
-                )}
+          {sortedAlleyways.map(alley => {
+            const isPlaying = playingId === alley.id;
+            return (
+              <div 
+                key={alley.id} 
+                className="glass-panel" 
+                style={{ 
+                  padding: '1.2rem', 
+                  cursor: 'pointer', 
+                  transition: 'all 0.3s ease', 
+                  background: isPlaying ? '#f0fdf4' : 'white',
+                  border: isPlaying ? '2px solid var(--accent-color)' : '1px solid #e2e8f0'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.4rem' }}>
+                  <h3 
+                    style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: '700' }}
+                    onClick={() => navigate(`/story/${alley.id}`)}
+                  >
+                    {alley.name}
+                  </h3>
+                  {alley.dist && (
+                    <span style={{ fontSize: '0.75rem', color: 'var(--accent-color)', fontWeight: '700', background: '#f0fdf4', padding: '2px 8px', borderRadius: '10px' }}>
+                      <FiMapPin style={{ display: 'inline', marginRight: '2px' }} />{alley.dist} km
+                    </span>
+                  )}
+                </div>
+                
+                <p 
+                  style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.4', marginBottom: '0.8rem' }}
+                  onClick={() => navigate(`/story/${alley.id}`)}
+                >
+                  {alley.intro}
+                </p>
+
+                {/* English Audio Guide & Read Story Action Bar */}
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      speakAudioGuide(alley.id, alley.name, alley.intro);
+                    }}
+                    style={{
+                      background: isPlaying ? '#ef4444' : 'var(--accent-color)',
+                      color: 'white',
+                      border: 'none',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '0.8rem',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      boxShadow: '0 2px 6px rgba(16,185,129,0.2)'
+                    }}
+                  >
+                    {isPlaying ? <><FiSquare /> Stop Audio</> : <><FiVolume2 /> English Audio Guide</>}
+                  </button>
+
+                  <button
+                    onClick={() => navigate(`/story/${alley.id}`)}
+                    style={{
+                      background: 'transparent',
+                      color: 'var(--text-secondary)',
+                      border: '1px solid #cbd5e1',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '0.8rem',
+                      fontWeight: '600',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Read Story &rarr;
+                  </button>
+                </div>
               </div>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.4' }}>{alley.intro}</p>
-              <div style={{ marginTop: '0.8rem', color: 'var(--accent-color)', fontSize: '0.85rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                READ STORY &rarr;
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -233,12 +323,20 @@ const MapDirectory = () => {
                 <Popup>
                   <strong style={{ fontSize: '1.1rem', color: '#0f172a' }}>{alley.name}</strong><br/>
                   <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{alley.intro}</span><br/>
-                  <button 
-                    onClick={() => navigate(`/story/${alley.id}`)}
-                    style={{ marginTop: '8px', padding: '6px 12px', background: 'var(--accent-color)', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
-                  >
-                    Read Story
-                  </button>
+                  <div style={{ marginTop: '8px', display: 'flex', gap: '4px' }}>
+                    <button 
+                      onClick={() => speakAudioGuide(alley.id, alley.name, alley.intro)}
+                      style={{ padding: '6px 10px', background: 'var(--accent-color)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '3px' }}
+                    >
+                      <FiVolume2 /> Audio
+                    </button>
+                    <button 
+                      onClick={() => navigate(`/story/${alley.id}`)}
+                      style={{ padding: '6px 10px', background: '#64748b', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', fontSize: '0.8rem' }}
+                    >
+                      Story
+                    </button>
+                  </div>
                 </Popup>
               </Marker>
             )
