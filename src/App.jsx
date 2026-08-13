@@ -1,63 +1,94 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Districts from './pages/Districts';
 import MapDirectory from './pages/MapDirectory';
-import Story from './pages/Story';
-import Review from './pages/Review';
+import Guide from './pages/Guide';
+import Profile from './pages/Profile';
 import Auth from './pages/Auth';
 import { useLanguage } from './LanguageContext';
+import { FiHome, FiMap, FiMessageSquare, FiUser, FiMenu } from 'react-icons/fi';
+import { LuLeaf } from 'react-icons/lu';
 import './index.css';
 
-function AppContent({ user, handleLogout, handleLogin }) {
-  const { language, setLanguage } = useLanguage();
+function BottomNav() {
   const location = useLocation();
-  const isSplash = location.pathname === '/';
+  const path = location.pathname;
+
+  // Don't show bottom nav on Auth screen or Splash (if any)
+  if (path === '/auth') return null;
 
   return (
+    <nav className="bottom-nav">
+      <Link to="/" className={`nav-item ${path === '/' ? 'active' : ''}`}>
+        <FiHome className="nav-icon" />
+        <span className="nav-label">Home</span>
+      </Link>
+      <Link to="/explore" className={`nav-item ${path.includes('/explore') ? 'active' : ''}`}>
+        <FiMap className="nav-icon" />
+        <span className="nav-label">Explore</span>
+      </Link>
+      <Link to="/guide" className={`nav-item ${path === '/guide' ? 'active' : ''}`}>
+        <FiMessageSquare className="nav-icon" />
+        <span className="nav-label">Guide</span>
+      </Link>
+      <Link to="/profile" className={`nav-item ${path === '/profile' ? 'active' : ''}`}>
+        <FiUser className="nav-icon" />
+        <span className="nav-label">Profile</span>
+      </Link>
+    </nav>
+  );
+}
+
+function Header() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  if (location.pathname === '/auth') return null;
+
+  return (
+    <header className="app-header">
+      <Link to="/" className="logo-container">
+        <div className="logo-icon">
+          <LuLeaf />
+        </div>
+        <div className="logo-text">
+          ScenTrip
+          <span>BUSAN</span>
+        </div>
+      </Link>
+      
+      <div className="header-actions">
+        <button className="icon-btn" onClick={() => navigate('/profile')}>
+          <FiUser />
+        </button>
+        <button className="icon-btn">
+          <FiMenu />
+        </button>
+      </div>
+    </header>
+  );
+}
+
+function AppContent({ user, handleLogin, handleLogout }) {
+  return (
     <>
-      {!isSplash && (
-        <header className="app-header" style={{ justifyContent: 'space-between' }}>
-          <Link to="/districts" className="logo">ScenTrip</Link>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            {['en', 'ko', 'ja', 'zh'].map(lang => (
-              <button 
-                key={lang} 
-                onClick={() => setLanguage(lang)}
-                style={{
-                  background: language === lang ? 'var(--accent-color)' : 'transparent',
-                  color: '#fff', border: '1px solid var(--accent-color)', borderRadius: '4px',
-                  padding: '0.2rem 0.5rem', cursor: 'pointer', fontFamily: 'var(--font-sans)',
-                  fontWeight: '600', transition: 'all 0.3s ease', textTransform: 'uppercase', fontSize: '0.8rem'
-                }}
-              >
-                {lang}
-              </button>
-            ))}
-            
-            {user ? (
-              <button onClick={handleLogout} className="btn-secondary" style={{ marginLeft: '1rem', padding: '0.3rem 0.8rem', background: 'transparent', color: '#fff', border: '1px solid #fff', borderRadius: '4px', cursor: 'pointer' }}>
-                Logout
-              </button>
-            ) : (
-              <Link to="/auth" className="btn-primary" style={{ marginLeft: '1rem', padding: '0.3rem 0.8rem' }}>
-                Login
-              </Link>
-            )}
-          </div>
-        </header>
-      )}
+      <Header />
       
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/explore" element={<MapDirectory />} />
+          <Route path="/guide" element={<Guide />} />
+          <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
+          <Route path="/auth" element={<Auth onLogin={handleLogin} />} />
+          {/* Fallback routes for older links */}
           <Route path="/districts" element={<Districts />} />
           <Route path="/district/:id" element={<MapDirectory />} />
-          <Route path="/story/:id" element={<Story />} />
-          <Route path="/review/:id" element={<Review user={user} />} />
-          <Route path="/auth" element={<Auth onLogin={handleLogin} />} />
         </Routes>
       </main>
+
+      <BottomNav />
     </>
   );
 }
