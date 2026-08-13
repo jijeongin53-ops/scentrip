@@ -92,7 +92,7 @@ const Story = () => {
               boxShadow: '0 4px 10px rgba(16,185,129,0.3)'
             }}
           >
-            {isPlaying ? <><FiSquare /> Stop Audio</> : <><FiVolume2 /> English Audio Guide</>}
+            {isPlaying ? <><FiSquare /> Stop Audio</> : <><FiVolume2 /> Audio Guide</>}
           </button>
         </div>
         

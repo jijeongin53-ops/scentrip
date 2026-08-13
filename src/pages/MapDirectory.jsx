@@ -271,7 +271,7 @@ const MapDirectory = () => {
                       boxShadow: '0 2px 6px rgba(16,185,129,0.2)'
                     }}
                   >
-                    {isPlaying ? <><FiSquare /> Stop Audio</> : <><FiVolume2 /> English Audio Guide</>}
+                    {isPlaying ? <><FiSquare /> Stop Audio</> : <><FiVolume2 /> Audio Guide</>}
                   </button>
 
                   <button
