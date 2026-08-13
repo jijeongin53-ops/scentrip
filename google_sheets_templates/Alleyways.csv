@@ -1,7 +1,13 @@
-id,districtId,name,intro,lat,lng
-101,1,Haeundae Market Alley,Taste the local seafood and street food.,35.1631,129.1636
-102,1,Dalmaji-gil Art Alley,Cafes and galleries overlooking the sea.,35.1587,129.1764
-201,2,Bosu-dong Book Street,A nostalgic alley filled with secondhand books.,35.1037,129.0279
-202,2,Gukje Market Alley,Bustling international market.,35.1011,129.0298
-301,3,Huinnyeoul Culture Village,Santorini of Korea on the coastal cliff.,35.0777,129.0438
-401,4,Songdo Beach Alley,Historic beach and modern cable car.,35.0754,129.0169
+id,districtId,name,lat,lng,intro
+101,1,Haeundae Beach,35.1587,129.1604,Busan iconic beach known for soft white sand and vibrant coastal views.
+102,1,Haeundae Blueline Park,35.1536,129.1834,Scenic oceanfront railway featuring Sky Capsules and beach trains.
+103,1,Busan X the SKY,35.1578,129.1678,Observation deck offering panoramic 360-degree views of Busan coastline.
+104,1,Dalmaji-gil Art Alley,35.1587,129.1764,Charming hill with cafes and art galleries overlooking the sea.
+201,2,Gamcheon Culture Village,35.0970,129.0108,Colorful hillside art community known as the Machu Picchu of Busan.
+202,2,Jagalchi Fish Market,35.0973,129.0287,Koreas largest traditional seafood market with fresh local delicacies.
+203,2,Bosu-dong Book Street,35.1037,129.0279,Nostalgic historic alley filled with vintage secondhand bookstores.
+204,2,Gukje Market Alley,35.1011,129.0298,Bustling international heritage market with endless local street food.
+301,3,Taejongdae Resort Park,35.0514,129.0872,Dramatic coastal cliffs and lighthouse views on Yeongdo Island.
+302,3,Huinnyeoul Culture Village,35.0777,129.0438,Santorini of Korea on a stunning oceanfront cliffside.
+401,4,Haedong Yonggungsa Temple,35.1903,129.2217,Rare coastal Buddhist temple built directly on majestic seaside rocks.
+402,4,Songdo Beach & Cable Car,35.0754,129.0169,Koreas first public beach featuring scenic marine cable cars.
