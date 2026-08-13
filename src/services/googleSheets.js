@@ -1,6 +1,49 @@
 const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL || '';
 
-// 4 Districts (Dong-gu, Jung-gu, Yeongdo-gu, Seo-gu) with 10 spots each (40 spots total)
+// Spot photo database mapping (40 spots)
+const SPOT_PHOTOS = {
+  '101': 'https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop',
+  '102': 'https://images.unsplash.com/photo-1517840901100-8179e982acb7?w=800&auto=format&fit=crop',
+  '103': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop',
+  '104': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop',
+  '105': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop',
+  '106': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop',
+  '107': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop',
+  '108': 'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=800&auto=format&fit=crop',
+  '109': 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop',
+  '110': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop',
+  '201': 'https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop',
+  '202': 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=800&auto=format&fit=crop',
+  '203': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop',
+  '204': 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&auto=format&fit=crop',
+  '205': 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&auto=format&fit=crop',
+  '206': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop',
+  '207': 'https://images.unsplash.com/photo-1545670723-196ed0954986?w=800&auto=format&fit=crop',
+  '208': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop',
+  '209': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop',
+  '210': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop',
+  '301': 'https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop',
+  '302': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&auto=format&fit=crop',
+  '303': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop',
+  '304': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop',
+  '305': 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop',
+  '306': 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&auto=format&fit=crop',
+  '307': 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop',
+  '308': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&auto=format&fit=crop',
+  '309': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop',
+  '310': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop',
+  '401': 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=800&auto=format&fit=crop',
+  '402': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop',
+  '403': 'https://images.unsplash.com/photo-1545670723-196ed0954986?w=800&auto=format&fit=crop',
+  '404': 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop',
+  '405': 'https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop',
+  '406': 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop',
+  '407': 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&auto=format&fit=crop',
+  '408': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop',
+  '409': 'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?w=800&auto=format&fit=crop',
+  '410': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop'
+};
+
 const MOCK_DATA = {
   Districts: [
     { id: '1', name: 'Dong-gu', image: 'https://images.unsplash.com/photo-1542838685-6495df025cd0?auto=format&fit=crop&w=800', description: 'Hillside monorails, history trails & harbor views' },
@@ -9,7 +52,6 @@ const MOCK_DATA = {
     { id: '4', name: 'Seo-gu', image: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=800', description: 'Songdo marine cable car, beaches & suspension bridges' }
   ],
   Alleyways: [
-    // --- Dong-gu (10 Spots) ---
     { id: '101', districtId: '1', name: 'Choryang Ibagu-gil', lat: 35.1165, lng: 129.0385, intro: 'Historic hillside trail featuring 168 stairs and scenic monorail.' },
     { id: '102', districtId: '1', name: 'Busan Station Eurasian Platform', lat: 35.1152, lng: 129.0422, intro: 'Bustling cultural transport hub connecting Eurasia and Busan Port.' },
     { id: '103', districtId: '1', name: 'Choryang Traditional Market', lat: 35.1172, lng: 129.0398, intro: 'Historic local market famous for galbi pork rib alleys and Dwaeji Gukbap.' },
@@ -21,7 +63,6 @@ const MOCK_DATA = {
     { id: '109', districtId: '1', name: 'An Yong-bok Memorial Hall', lat: 35.1255, lng: 129.0340, intro: 'Historic memorial honoring Dokdo ocean defender An Yong-bok.' },
     { id: '110', districtId: '1', name: 'Sanbok-doro Skyway Road', lat: 35.1235, lng: 129.0355, intro: 'Panoramic mountain belt road offering stunning nighttime harbor lights.' },
 
-    // --- Jung-gu (10 Spots) ---
     { id: '201', districtId: '2', name: 'Yongdusan Park & Busan Tower', lat: 35.1006, lng: 129.0326, intro: 'Iconic hilltop park featuring 360-degree panoramic views from Busan Tower.' },
     { id: '202', districtId: '2', name: 'Jagalchi Fish Market', lat: 35.0973, lng: 129.0287, intro: 'Koreas premier traditional fresh seafood market right on the harbor.' },
     { id: '203', districtId: '2', name: 'Gukje Market Alley', lat: 35.1011, lng: 129.0298, intro: 'Famous post-war heritage market with endless local street food stalls.' },
@@ -33,7 +74,6 @@ const MOCK_DATA = {
     { id: '209', districtId: '2', name: 'Bupyeong Kkangtong Night Market', lat: 35.1025, lng: 129.0270, intro: 'Vibrant night market famous for international food stalls and fried fish cakes.' },
     { id: '210', districtId: '2', name: 'Gwangbok-dong Fashion Street', lat: 35.0998, lng: 129.0315, intro: 'Bustling shopping artery filled with fashion brands and street artists.' },
 
-    // --- Yeongdo-gu (10 Spots) ---
     { id: '301', districtId: '3', name: 'Taejongdae Resort Park', lat: 35.0514, lng: 129.0872, intro: 'Dramatic coastal cliff park with lighthouse and ocean views.' },
     { id: '302', districtId: '3', name: 'Huinnyeoul Culture Village', lat: 35.0777, lng: 129.0438, intro: 'Cliffside art village with white-washed houses over the sea.' },
     { id: '303', districtId: '3', name: 'National Maritime Museum', lat: 35.0915, lng: 129.0801, intro: 'Koreas premier ocean museum with huge cylindrical aquarium.' },
@@ -45,7 +85,6 @@ const MOCK_DATA = {
     { id: '309', districtId: '3', name: 'Yeongdo Haenyeo Cultural Center', lat: 35.0560, lng: 129.0820, intro: 'Exhibition and fresh seafood hall celebrating female sea divers.' },
     { id: '310', districtId: '3', name: 'Gamji Pebble Beach', lat: 35.0485, lng: 129.0810, intro: 'Picturesque pebble beach famous for fresh grilled clam tents.' },
 
-    // --- Seo-gu (10 Spots) ---
     { id: '401', districtId: '4', name: 'Songdo Beach', lat: 35.0754, lng: 129.0169, intro: 'Koreas first official public beach with soft golden sand.' },
     { id: '402', districtId: '4', name: 'Songdo Marine Cable Car', lat: 35.0740, lng: 129.0185, intro: 'Scenic cable car gliding 86m high across Songdo ocean bay.' },
     { id: '403', districtId: '4', name: 'Songdo Yonggung Suspension Bridge', lat: 35.0670, lng: 129.0230, intro: 'Thrilling cliffside suspension bridge connecting to uninhabited island.' },
@@ -56,12 +95,6 @@ const MOCK_DATA = {
     { id: '408', districtId: '4', name: 'Provisional Capital Memorial Hall', lat: 35.1030, lng: 129.0180, intro: 'Historical residence of Korean War President Rhee Syngman.' },
     { id: '409', districtId: '4', name: 'Dong-A University Seokdang Museum', lat: 35.1045, lng: 129.0195, intro: 'National heritage museum showcasing ancient Korean artifacts.' },
     { id: '410', districtId: '4', name: 'Songdo Skywalk', lat: 35.0760, lng: 129.0190, intro: 'Curved ocean walkway extending 365m over crystal clear waters.' }
-  ],
-  Stories: [
-    { alleywayId: '101', content: 'Choryang Ibagu-gil tells the poignant story of Busan hill culture. Climbing the 168 stairs reveals the resilience of workers who built Busan into a major global harbor city.', images: ['https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop'] },
-    { alleywayId: '201', content: 'Yongdusan Park is home to the 120-meter tall Busan Tower. Standing atop Yongdusan Mountain, it has offered travelers majestic harbor views since 1973.', images: ['https://images.unsplash.com/photo-1617469165786-8007eda3caa7?w=800&auto=format&fit=crop'] },
-    { alleywayId: '301', content: 'Taejongdae Resort Park features majestic cliffs carved by ocean waves over thousands of years. Named after King Muyeol of Silla, it offers unforgettable lighthouse sea vistas.', images: ['https://images.unsplash.com/photo-1588665045668-3d1933ba9fcc?w=800&auto=format&fit=crop'] },
-    { alleywayId: '401', content: 'Songdo Beach opened in 1913 as Koreas first public beach. Combined with the Songdo Marine Cable Car and Skywalk, it offers thrilling coastal adventures.', images: ['https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=800&auto=format&fit=crop'] }
   ]
 };
 
@@ -110,16 +143,20 @@ export const getAlleyways = async (districtId) => {
 export const getStory = async (alleywayId) => {
     const stories = await getData('Stories');
     const existing = stories.find(s => String(s.alleywayId) === String(alleywayId));
-    if (existing) return existing;
-
+    
     const spot = MOCK_DATA.Alleyways.find(a => String(a.id) === String(alleywayId));
     const title = spot ? spot.name : 'Busan Landmark';
     const intro = spot ? spot.intro : 'A wonderful coastal spot in Busan.';
+    const photo = SPOT_PHOTOS[String(alleywayId)] || 'https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop';
+
+    if (existing && existing.images && existing.images.length > 0) {
+        return { ...existing, images: [photo] };
+    }
 
     return {
         alleywayId,
         content: `${title} is one of the most vibrant and iconic destinations in Busan. ${intro}\n\nVisitors from around the world come here to experience the unique blend of Korean coastal culture, historic heritage, and breathtaking ocean scenery. Take a peaceful walk along the scenic path, enjoy local food delicacies nearby, and create unforgettable travel memories in Busan.`,
-        images: ['https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop']
+        images: [photo]
     };
 };
 
@@ -167,10 +204,16 @@ export const syncAllSpotsToGoogleSheet = async () => {
     }
     let successCount = 0;
     for (const spot of MOCK_DATA.Alleyways) {
+        const photo = SPOT_PHOTOS[String(spot.id)] || '';
+        const storyPayload = {
+            alleywayId: spot.id,
+            content: `${spot.name} - ${spot.intro}`,
+            imageUrl: photo
+        };
+        await postData("Stories", "append", storyPayload);
         const res = await postData("Alleyways", "append", spot);
         if (res) successCount++;
         
-        // Also push 5 reviews for each spot to Reviews sheet tab
         const spotReviews = await getReviews(spot.id);
         for (const r of spotReviews) {
             await postData("Reviews", "append", r);

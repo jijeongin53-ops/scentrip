@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getStory, getReviews } from '../services/googleSheets';
 import { FiVolume2, FiSquare, FiArrowLeft, FiStar, FiMessageCircle, FiUser } from 'react-icons/fi';
 
+const FALLBACK_PHOTO = 'https://images.unsplash.com/photo-1542838685-6495df025cd0?w=800&auto=format&fit=crop';
+
 const Story = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -57,6 +59,8 @@ const Story = () => {
     return <div style={{ textAlign: 'center', padding: '3rem' }}>Story not found.</div>;
   }
 
+  const mainImage = (story.images && story.images.length > 0 && story.images[0]) ? story.images[0] : FALLBACK_PHOTO;
+
   return (
     <div className="story-container animate-fade-in" style={{ maxWidth: '800px', margin: '0 auto', paddingBottom: '4rem', padding: '1rem' }}>
       
@@ -67,12 +71,18 @@ const Story = () => {
         <FiArrowLeft /> Back
       </button>
 
-      {/* Story Hero Image */}
-      {story.images && story.images.length > 0 && (
-        <div style={{ width: '100%', height: '320px', borderRadius: '20px', overflow: 'hidden', marginBottom: '1.5rem', boxShadow: 'var(--shadow-md)' }}>
-          <img src={story.images[0]} alt="Story visual" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>
-      )}
+      {/* Story Hero Image with Fallback handling */}
+      <div style={{ width: '100%', height: '340px', borderRadius: '20px', overflow: 'hidden', marginBottom: '1.5rem', boxShadow: 'var(--shadow-md)', background: '#e2e8f0' }}>
+        <img 
+          src={mainImage} 
+          alt="Story visual" 
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = FALLBACK_PHOTO;
+          }}
+        />
+      </div>
 
       {/* Story Content Card */}
       <div className="glass-panel" style={{ padding: '2rem', background: 'white', marginBottom: '1.5rem' }}>
