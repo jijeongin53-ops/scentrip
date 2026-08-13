@@ -97,14 +97,27 @@ function AppContent({ user, handleLogin, handleLogout }) {
 }
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('scentrip_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
 
   const handleLogin = (userData) => {
     setUser(userData);
+    try {
+      localStorage.setItem('scentrip_user', JSON.stringify(userData));
+    } catch (e) {}
   };
 
   const handleLogout = () => {
     setUser(null);
+    try {
+      localStorage.removeItem('scentrip_user');
+    } catch (e) {}
   };
 
   return (
